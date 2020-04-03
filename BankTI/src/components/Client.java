@@ -35,11 +35,11 @@ public class Client {
 
 //On définit les Setters
 	public void setName(String name) {
-		this.name = name.trim();
+		this.name = name;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName.trim();
+		this.firstName = firstName;
 	}
 	
 	public void setNum(int num) {
