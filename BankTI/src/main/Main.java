@@ -23,6 +23,7 @@ public class Main {
 		
 	}
 	//Méthode pour créer un taleau contenant n clients
+	@SuppressWarnings("resource")
 	public static List <Client> addClient( List<Client> list, int number) {
 		
 		Scanner snum = new Scanner(System.in);
