@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import components.Account;
 import components.Client;
+import components.CurrentAccount;
+import components.SavingsAccount;
 
 
 public class Main {
@@ -16,15 +19,47 @@ public class Main {
 		
 		List <Client> clients = new ArrayList <Client> ();
 		clients.add(new Client("Thomas", "ISOARDO"));
-		addClient(clients, 2);
-		displayClient(clients);
-		addClient(clients, 1);
-		displayClient(clients);
+		clients.add(new Client("Julien", "POTIER"));
+		clients.add(new Client("Jean-Louis", "Aubert"));
+
+		
+		List <Account> accounts = addAccount(clients);
+		displayAccount(accounts);
+		
 		
 	}
+	
+	//Méthode pour créer un tableau contenant des comptes
+	public static List <Account> addAccount(List <Client> list){
+		
+		Scanner slabel1 = new Scanner(System.in);
+		Scanner slabel2 = new Scanner(System.in);
+		List <Account> accountList = new ArrayList <Account>();
+		
+		for (int i = 0 ; i < list.size(); i++) {
+			
+			System.out.println("Veuillez entrer un libélé pour le compte courant :");
+			String label1 = slabel1.nextLine();
+			accountList.add(new CurrentAccount(label1, list.get(i)));
+			
+			System.out.println("Veuillez entrer un libélé pour le compte épargne :");
+			String label2 = slabel2.nextLine();
+			accountList.add(new SavingsAccount(label2, list.get(i)));
+		}
+		return accountList;
+	}
+	
+	//Méthode pour lire notre tableau de comptes avec un stream
+		public static void displayAccount(List <Account> list) 
+		{
+			Stream<Account> sc = list.stream();
+			sc.forEach(System.out::println);		
+		}
+	
+	
 	//Méthode pour créer un taleau contenant n clients
 	@SuppressWarnings("resource")
-	public static List <Client> addClient( List<Client> list, int number) {
+	public static List <Client> addClient(List<Client> list, int number) {
 		
 		Scanner snum = new Scanner(System.in);
 		
@@ -60,7 +95,7 @@ public class Main {
 		return list;
 	}
 	
-	//Méthode pour lire notre tableau avec un stream
+	//Méthode pour lire notre tableau de clients avec un stream
 	public static void displayClient(List <Client> list) 
 	{
 		Stream<Client> sc = list.stream();

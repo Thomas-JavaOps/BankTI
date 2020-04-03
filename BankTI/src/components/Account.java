@@ -1,7 +1,7 @@
 //1.2.1 Creation of Account class
 package components;
 
-abstract class Account {
+public abstract class Account {
 	
 //////////////////////Variables////////////////////////	
 	protected String label ="Rien";
