@@ -1,16 +1,22 @@
+//1.2.1 Creation of Account class
 package components;
 
 abstract class Account {
 	
 //////////////////////Variables////////////////////////	
-	protected String label;
+	protected String label ="Rien";
 	protected double balance = 0.0;
-	protected int numAccount; 
+	protected static int num = 0;
+	protected int numAccount = 0; 
 	
 //////////////////////Constructeur/////////////////////	
+	protected Account() {
+		
+	}
 	protected Account(String label, Client client) {
 			this.label = label;
-			numAccount = client.getNumClient();
+			++num;
+			this.numAccount = num;
 		}
 	
 /////////////////////Les Getters////////////////////////	
@@ -37,6 +43,11 @@ abstract class Account {
 		
 	public void setNumAccount(int numAccount) {
 		this.numAccount = numAccount;	
+	}
+	
+/////////////////////Méthode////////////////////
+	public String toString() {
+		return "Le compte n°" + this.numAccount + " : \"" + this.label + "\" est accrédité de " + this.balance + "€" ;
 	}
 	
 }
