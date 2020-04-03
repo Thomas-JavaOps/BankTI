@@ -9,10 +9,10 @@ public class Client {
 	private static int numClient;
 
 ///////////////////////////Les constructeurs///////////////////////////////	
-	Client() {
+	public Client() {
 	}
 
-	Client(String name, String firstName) {
+	public Client(String name, String firstName) {
 		this.name = name;
 		this.firstName = firstName;
 		++numClient;
@@ -35,11 +35,11 @@ public class Client {
 
 //On définit les Setters
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = firstName.trim();
 	}
 	
 	public void setNum(int num) {
