@@ -1,4 +1,4 @@
-//1.3.5 Creation of the flowArray
+//1.3.5 Updating Accounts
 package main;
 
 import java.time.temporal.ChronoUnit;
@@ -33,10 +33,6 @@ public class Main {
 		List <Account> accounts = addAccount(clients);
 		Hashtable <Integer, Account> ht = createHashtable(accounts);
 		List <Flow> flow = createFlowArray(ht);
-		
-		System.out.println(accounts.get(0).getBalance());
-		System.out.println(accounts.get(1).getBalance());
-		
 		updateBalance(flow, ht);
 		displayHashtable(ht);
 		
