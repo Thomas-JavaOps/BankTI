@@ -37,8 +37,8 @@ public abstract class Account {
 		this.label = label;	
 	}
 	
-	public void setBalance(Double balance) {
-		this.balance= balance;	
+	public void setBalance(Flow flow) {
+		this.balance += flow.getAmount() ;	
 	}
 		
 	public void setNumAccount(int numAccount) {

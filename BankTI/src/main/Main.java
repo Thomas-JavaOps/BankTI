@@ -3,13 +3,11 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import components.Account;
@@ -28,8 +26,6 @@ public class Main {
 		clients.add(new Client("Jean-Louis", "Aubert"));
 
 		List <Account> accounts = addAccount(clients);
-		for (int i=0; i<6; i++)
-		accounts.get(i).setBalance((double) 6-i);
 		
 		Hashtable <String, Account> ht = createHashtable(accounts);
 		displayHashtable(ht);
