@@ -1,6 +1,7 @@
-//1.3.1 Adaptation of the table of accounts
+//1.3.4 Creation of the flowArray
 package main;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -12,12 +13,16 @@ import java.util.stream.Stream;
 
 import components.Account;
 import components.Client;
+import components.Credit;
 import components.CurrentAccount;
+import components.Debit;
+import components.Flow;
 import components.SavingsAccount;
+import components.Transfert;
 
 
 public class Main {
-	
+///////////////////////////////////////Méthode Main ///////////////////////////////////////////////////////	
 	public static void main (String[] args) {
 
 		List <Client> clients = new ArrayList <Client> ();
@@ -26,14 +31,57 @@ public class Main {
 		clients.add(new Client("Jean-Louis", "Aubert"));
 
 		List <Account> accounts = addAccount(clients);
+		Hashtable <Integer, Account> ht = createHashtable(accounts);
+		List <Flow> flow = createFlowArray(ht);
 		
-		Hashtable <String, Account> ht = createHashtable(accounts);
-		displayHashtable(ht);
+		for (int i=0; i<flow.size(); i++)
+		System.out.println(flow.get(i).getAmount());
 
 		
 	}
-	//Méthod pour lire le Hashtable trié par valeur de balance
-	public static void displayHashtable(Hashtable <String, Account> ht) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	//Méthode pour créer le flow d'Array voulu 
+	public static List <Flow> createFlowArray(Hashtable<Integer,Account> ht){
+
+		List <Flow> list = new ArrayList <Flow>();
+		//Première opération
+		Debit deb = new Debit("01", 1, 50.0, "Paiement Baby-Sitting");
+		list.add(deb);
+		
+		//Deuxième opération
+		for (int i =1; i<=ht.size();i++) {
+			if ( ht.get(i).getClass().getName().contentEquals("components.CurrentAccount"))
+			{
+				Credit cred1 = new Credit("02", i, 100.50, "Courses Alimentaires");
+				list.add(cred1);
+			} 
+		}
+		
+		//Troisième opération
+		for (int i =1; i<=ht.size();i++) {
+			if ( ht.get(i).getClass().getName().contentEquals("components.SavingsAccount"))
+			{
+				Credit cred2 = new Credit("03", i, 1500.0, "Achat Scooter");
+				list.add(cred2);
+			}
+		}
+
+		//Dernière opération
+		Transfert trft = new Transfert("04", 1, 2, 50.0, "Remboursement Cadeau");
+		list.add(trft);
+		
+		//On recule de deux jours la date de l'opération
+		for (int i =0; i<list.size();i++)
+			{
+				list.get(i).setFlowDate(list.get(i).getFlowDate().plus(2,ChronoUnit.DAYS));
+			}
+		
+		return list;
+	}
+	
+	//Méthode pour lire le Hashtable trié par valeur de balance
+	public static void displayHashtable(Hashtable <Integer, Account> ht) {
 				
 		ht.entrySet().stream()
 		.sorted(Map.Entry.comparingByValue(Comparator.comparingDouble(Account::getBalance)))
@@ -41,15 +89,14 @@ public class Main {
 
 	}
 	
-	
 	//Méthode pour ajouter les comptes dans une Hashtable
-	public static Hashtable <String, Account> createHashtable(List<Account> list){
+	public static Hashtable <Integer, Account> createHashtable(List<Account> list){
 		
-		Hashtable <String, Account> ht = new Hashtable <String, Account> ();
+		Hashtable <Integer, Account> ht = new Hashtable <Integer, Account> ();
 		
 		for (int i =0; i<list.size(); i++)
 			{
-				ht.put(list.get(i).getLabel(), list.get(i));
+				ht.put(list.get(i).getNumAccount(), list.get(i));
 			}		
 		return ht;
 	}

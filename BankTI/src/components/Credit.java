@@ -6,8 +6,8 @@ public class Credit extends Flow {
 		super();
 	}
 	
-	public Credit (String id, int tNumAccount, double amount, Boolean effect, String comment){
-		super(id, tNumAccount, amount, effect, comment);
+	public Credit (String id, int tNumAccount, double amount, String comment){
+		super(id, tNumAccount, amount, comment);
 	}
 
 }

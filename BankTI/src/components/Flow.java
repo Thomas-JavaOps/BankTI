@@ -9,21 +9,21 @@ public abstract class Flow {
 	private String id ="Inconnu";
 	private double amount =0.0;
 	private int tNumAccount =0;
-	private Boolean effect= true;
+	private Boolean effect= false;
 	private LocalDateTime flowDate = LocalDateTime.now();
 	
 	////////////////////////////////Constructeurs////////////////////
 	protected Flow () {
 	}
 	
-	protected Flow(String id, int tNumAccount, double amount, Boolean effect, String comment)
+	protected Flow(String id, int tNumAccount, double amount, String comment)
 	{
 		this.id = id;
 		this.tNumAccount = tNumAccount;
 		this.amount = amount;
-		this.effect = effect;
 		this.flowDate = LocalDateTime.now();
 		this.comment = comment;
+		this.effect = true;
 	}
 	
 	///////////////////////////////Getters////////////////////////////////////
@@ -68,7 +68,7 @@ public abstract class Flow {
 		this.effect = effect;
 	}
 	
-	public void getFlowDate(LocalDateTime flowDate) {
+	public void setFlowDate(LocalDateTime flowDate) {
 		this.flowDate = flowDate;
 	}
 	

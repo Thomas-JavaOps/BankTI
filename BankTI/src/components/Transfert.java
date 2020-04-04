@@ -8,8 +8,8 @@ public class Transfert extends Flow {
 		super();
 	}
 	
-	public Transfert (String id, int fNumAccount, int tNumAccount, double amount, Boolean effect, String comment){
-		super(id, tNumAccount, amount, effect, comment);
+	public Transfert (String id, int fNumAccount, int tNumAccount, double amount, String comment){
+		super(id, tNumAccount, amount, comment);
 		this.fNumAccount = fNumAccount;
 	}
 	

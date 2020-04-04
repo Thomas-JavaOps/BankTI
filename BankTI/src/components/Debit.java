@@ -6,8 +6,8 @@ public class Debit extends Flow{
 		super();
 	}
 	
-	public Debit (String id, int tNumAccount, double amount, Boolean effect, String comment){
-		super(id, tNumAccount, amount, effect, comment);
+	public Debit (String id, int tNumAccount, double amount, String comment){
+		super(id, tNumAccount, amount, comment);
 	}
 
 }
