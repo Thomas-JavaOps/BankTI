@@ -75,5 +75,5 @@ public abstract class Flow {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
+	
 }

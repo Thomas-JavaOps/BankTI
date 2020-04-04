@@ -38,7 +38,11 @@ public abstract class Account {
 	}
 	
 	public void setBalance(Flow flow) {
-		this.balance += flow.getAmount() ;	
+		if (flow.getClass().getName().contentEquals("components.Credit") 
+			|| flow.getClass().getName().contentEquals("components.Transfert") && flow.getTargetNumAccount() == this.numAccount )
+				this.balance += flow.getAmount() ;
+		else 
+				this.balance -= flow.getAmount();
 	}
 		
 	public void setNumAccount(int numAccount) {

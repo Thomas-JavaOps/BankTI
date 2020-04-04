@@ -1,4 +1,4 @@
-//1.3.4 Creation of the flowArray
+//1.3.5 Creation of the flowArray
 package main;
 
 import java.time.temporal.ChronoUnit;
@@ -34,12 +34,50 @@ public class Main {
 		Hashtable <Integer, Account> ht = createHashtable(accounts);
 		List <Flow> flow = createFlowArray(ht);
 		
-		for (int i=0; i<flow.size(); i++)
-		System.out.println(flow.get(i).getAmount());
-
+		System.out.println(accounts.get(0).getBalance());
+		System.out.println(accounts.get(1).getBalance());
+		
+		updateBalance(flow, ht);
+		displayHashtable(ht);
 		
 	}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Méthode pour mettre à jour les balances
+	public static void updateBalance(List <Flow> list, Hashtable <Integer, Account> ht){
+		
+		Transfert transfert ;
+		
+		for (int i=0; i<list.size() ; i++)
+		{
+			int tNumAccount = list.get(i).getTargetNumAccount();
+			int fNumAccount = 0;
+
+			if (list.get(i).getClass().getName().contentEquals("components.Transfert"))
+			{
+				transfert = (Transfert)(list.get(i));
+				fNumAccount = transfert.getFromNumAccount();
+			}
+				
+			for (int j=1; j<=ht.size() ; j++)
+			{
+					if (ht.get(j).getNumAccount()== tNumAccount || ht.get(j).getNumAccount() == fNumAccount)
+					{
+							ht.get(j).setBalance(list.get(i));
+					}			
+			}
+		}
+		
+		//On vérifie que toutes les balances sont positives 	
+		long value = ht.entrySet().stream()
+				.filter(x -> (x.getValue().getBalance())<0)
+				.count();
+			
+		if (value != 0)
+		{
+			System.out.println("Il existe au moins un compte avec une balance négative!");
+		}
+	
+	}
 	
 	//Méthode pour créer le flow d'Array voulu 
 	public static List <Flow> createFlowArray(Hashtable<Integer,Account> ht){
@@ -80,6 +118,8 @@ public class Main {
 		return list;
 	}
 	
+	
+	
 	//Méthode pour lire le Hashtable trié par valeur de balance
 	public static void displayHashtable(Hashtable <Integer, Account> ht) {
 				
@@ -88,6 +128,9 @@ public class Main {
 		.forEach(System.out::println);
 
 	}
+	
+	
+	
 	
 	//Méthode pour ajouter les comptes dans une Hashtable
 	public static Hashtable <Integer, Account> createHashtable(List<Account> list){
@@ -100,6 +143,9 @@ public class Main {
 			}		
 		return ht;
 	}
+	
+	
+	
 	
 	//Méthode pour créer un tableau contenant des comptes
 	public static List <Account> addAccount(List <Client> list){

@@ -2,7 +2,7 @@ package components;
 
 public class Transfert extends Flow {
 	
-	private int fNumAccount; 
+	private int fNumAccount = 0 ; 
 	
 	public Transfert(){
 		super();
