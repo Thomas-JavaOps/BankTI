@@ -16,7 +16,7 @@ public abstract class Flow {
 	protected Flow () {
 	}
 	
-	protected Flow(String id, int tNumAccount, double amount)
+	protected Flow(String id, int tNumAccount, double amount, Boolean effect, String comment)
 	{
 		this.id = id;
 		this.tNumAccount = tNumAccount;
