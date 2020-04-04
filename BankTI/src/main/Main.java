@@ -1,10 +1,15 @@
-//1.2.3 Creation of the main class for test
+//1.3.1 Adaptation of the table of accounts
 package main;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import components.Account;
@@ -16,16 +21,41 @@ import components.SavingsAccount;
 public class Main {
 	
 	public static void main (String[] args) {
-		
+
 		List <Client> clients = new ArrayList <Client> ();
 		clients.add(new Client("Thomas", "ISOARDO"));
 		clients.add(new Client("Julien", "POTIER"));
 		clients.add(new Client("Jean-Louis", "Aubert"));
 
-		
 		List <Account> accounts = addAccount(clients);
-		displayAccount(accounts);
+		for (int i=0; i<6; i++)
+		accounts.get(i).setBalance((double) 6-i);
 		
+		Hashtable <String, Account> ht = createHashtable(accounts);
+		displayHashtable(ht);
+
+		
+	}
+	//Méthod pour lire le Hashtable trié par valeur de balance
+	public static void displayHashtable(Hashtable <String, Account> ht) {
+				
+		ht.entrySet().stream()
+		.sorted(Map.Entry.comparingByValue(Comparator.comparingDouble(Account::getBalance)))
+		.forEach(System.out::println);
+
+	}
+	
+	
+	//Méthode pour ajouter les comptes dans une Hashtable
+	public static Hashtable <String, Account> createHashtable(List<Account> list){
+		
+		Hashtable <String, Account> ht = new Hashtable <String, Account> ();
+		
+		for (int i =0; i<list.size(); i++)
+			{
+				ht.put(list.get(i).getLabel(), list.get(i));
+			}		
+		return ht;
 	}
 	
 	//Méthode pour créer un tableau contenant des comptes
