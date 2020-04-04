@@ -1,4 +1,4 @@
-//1.1.2 Creation of the main class for test
+//1.2.3 Creation of the main class for test
 package main;
 
 import java.util.ArrayList;
@@ -26,25 +26,18 @@ public class Main {
 		List <Account> accounts = addAccount(clients);
 		displayAccount(accounts);
 		
-		
 	}
 	
 	//Méthode pour créer un tableau contenant des comptes
 	public static List <Account> addAccount(List <Client> list){
 		
-		Scanner slabel1 = new Scanner(System.in);
-		Scanner slabel2 = new Scanner(System.in);
+
 		List <Account> accountList = new ArrayList <Account>();
 		
 		for (int i = 0 ; i < list.size(); i++) {
-			
-			System.out.println("Veuillez entrer un libélé pour le compte courant :");
-			String label1 = slabel1.nextLine();
-			accountList.add(new CurrentAccount(label1, list.get(i)));
-			
-			System.out.println("Veuillez entrer un libélé pour le compte épargne :");
-			String label2 = slabel2.nextLine();
-			accountList.add(new SavingsAccount(label2, list.get(i)));
+
+			accountList.add(new CurrentAccount("CCourant"+list.get(i).getNumClient(), list.get(i)));
+			accountList.add(new SavingsAccount("CEpargne"+list.get(i).getNumClient(), list.get(i)));
 		}
 		return accountList;
 	}
