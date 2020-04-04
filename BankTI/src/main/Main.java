@@ -1,4 +1,4 @@
-//1.1.2 Creation of the main class for test
+//1.2.3 Creation of the main class for test
 package main;
 
 import java.util.ArrayList;
@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import components.Account;
 import components.Client;
+import components.CurrentAccount;
+import components.SavingsAccount;
 
 
 public class Main {
@@ -16,15 +19,40 @@ public class Main {
 		
 		List <Client> clients = new ArrayList <Client> ();
 		clients.add(new Client("Thomas", "ISOARDO"));
-		addClient(clients, 2);
-		displayClient(clients);
-		addClient(clients, 1);
-		displayClient(clients);
+		clients.add(new Client("Julien", "POTIER"));
+		clients.add(new Client("Jean-Louis", "Aubert"));
+
+		
+		List <Account> accounts = addAccount(clients);
+		displayAccount(accounts);
 		
 	}
+	
+	//Méthode pour créer un tableau contenant des comptes
+	public static List <Account> addAccount(List <Client> list){
+		
+
+		List <Account> accountList = new ArrayList <Account>();
+		
+		for (int i = 0 ; i < list.size(); i++) {
+
+			accountList.add(new CurrentAccount("CCourant"+list.get(i).getNumClient(), list.get(i)));
+			accountList.add(new SavingsAccount("CEpargne"+list.get(i).getNumClient(), list.get(i)));
+		}
+		return accountList;
+	}
+	
+	//Méthode pour lire notre tableau de comptes avec un stream
+		public static void displayAccount(List <Account> list) 
+		{
+			Stream<Account> sc = list.stream();
+			sc.forEach(System.out::println);		
+		}
+	
+	
 	//Méthode pour créer un taleau contenant n clients
 	@SuppressWarnings("resource")
-	public static List <Client> addClient( List<Client> list, int number) {
+	public static List <Client> addClient(List<Client> list, int number) {
 		
 		Scanner snum = new Scanner(System.in);
 		
@@ -60,7 +88,7 @@ public class Main {
 		return list;
 	}
 	
-	//Méthode pour lire notre tableau avec un stream
+	//Méthode pour lire notre tableau de clients avec un stream
 	public static void displayClient(List <Client> list) 
 	{
 		Stream<Client> sc = list.stream();
