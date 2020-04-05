@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -63,14 +64,20 @@ public class Main {
 			}
 		}
 		
+		Hashtable<Integer, Account> hp = new Hashtable<Integer, Account>();
+		
 		//On vérifie que toutes les balances sont positives 	
-		long value = ht.entrySet().stream()
+		long value = hp.entrySet().stream()
 				.filter(x -> (x.getValue().getBalance())<0)
-				.count();
+				.count();	
+		Optional <Long> opt = Optional.of(value);
 			
-		if (value != 0)
+		if (opt != null)
 		{
-			System.out.println("Il existe au moins un compte avec une balance négative!");
+			if (value != 0)
+			{
+				System.out.println("Il existe au moins un compte avec une balance négative!");
+			}
 		}
 	
 	}
