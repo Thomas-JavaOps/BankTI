@@ -64,10 +64,8 @@ public class Main {
 			}
 		}
 		
-		Hashtable<Integer, Account> hp = new Hashtable<Integer, Account>();
-		
 		//On vérifie que toutes les balances sont positives 	
-		long value = hp.entrySet().stream()
+		long value = ht.entrySet().stream()
 				.filter(x -> (x.getValue().getBalance())<0)
 				.count();	
 		Optional <Long> opt = Optional.of(value);
