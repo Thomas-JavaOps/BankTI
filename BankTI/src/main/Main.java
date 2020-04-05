@@ -1,6 +1,13 @@
-//1.3.5 Updating Accounts
+//Exo 2 -> JSON et XML
 package main;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,6 +19,18 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import components.Account;
 import components.Client;
 import components.Credit;
@@ -21,23 +40,121 @@ import components.Flow;
 import components.SavingsAccount;
 import components.Transfert;
 
-
 public class Main {
 ///////////////////////////////////////Méthode Main ///////////////////////////////////////////////////////	
 	public static void main (String[] args) {
 
-		List <Client> clients = new ArrayList <Client> ();
+		/*List <Client> clients = new ArrayList <Client> ();
 		clients.add(new Client("Thomas", "ISOARDO"));
 		clients.add(new Client("Julien", "POTIER"));
-		clients.add(new Client("Jean-Louis", "Aubert"));
-
+		clients.add(new Client("Jean-Louis", "Aubert"));*/
+		List <Client> clients = parseXML();
+		displayClient(clients);
 		List <Account> accounts = addAccount(clients);
 		Hashtable <Integer, Account> ht = createHashtable(accounts);
-		List <Flow> flow = createFlowArray(ht);
+		List <Flow> flow = readJSON();
+		//List <Flow> flow = createFlowArray(ht);
 		updateBalance(flow, ht);
-		displayHashtable(ht);
+		displayHashtable(ht);	
 		
+}		
+	
+	  public static List <Client> parseXML() {
+		     
+		      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		      List <Client> list = new ArrayList <Client>(); 
+		       Path pathXML = Paths.get("client.xml");
+		       
+		      try (InputStream is = Files.newInputStream(pathXML)) {
+		         
+		         DocumentBuilder builder = factory.newDocumentBuilder();
+		         factory.setIgnoringElementContentWhitespace(true);
+
+		         Document xml = builder.parse(is);
+		         
+		         NodeList names = xml.getElementsByTagName("name");
+		         NodeList firstNames = xml.getElementsByTagName("firstName");
+		         
+		         for (int i=0; i<names.getLength();i++)
+		         {
+		        	String name = names.item(i).getTextContent();
+		        	String firstName = firstNames.item(i).getTextContent();
+		        	Client client = new Client(name, firstName);
+		        	list.add(client);
+		         }
+
+		      } catch (ParserConfigurationException e) {
+		         e.printStackTrace();
+		      } catch (SAXException e) {
+		         e.printStackTrace();
+		      } catch (IOException e) {
+		         e.printStackTrace();
+		      }
+		      
+		      return list;
 	}
+	
+/////////////////////////////////////////////////JSON////////////////////////////////////////////////////	
+///////////////////////////// Méthode pour remplir une Liste<Flow> à partir d'un JSON//////////////////////////////
+	@SuppressWarnings("unchecked")
+	public  static List <Flow> readJSON() {
+		
+		JSONParser jsonParser = new JSONParser();
+		List<Flow> list = new ArrayList<Flow>();
+		Path pathJSON = Paths.get("flow.json");
+		
+		try(InputStream is = Files.newInputStream(pathJSON)) {
+			
+			Object obj = jsonParser.parse(new InputStreamReader(is, "UTF-8"));
+			JSONArray flowArray = (JSONArray) obj;
+		    
+            //Iterate over employee array
+            flowArray.forEach(emp -> parseFlow(list,(JSONObject) emp));
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+		
+		return list;
+}	
+	
+//Méthode pour incrémenter la liste pour chaque JSONObject
+private static void parseFlow(List <Flow> list, JSONObject flow)
+	    {
+			Flow fl;
+			
+			JSONObject flowObj = (JSONObject) flow.get("Flow");
+	        
+	        String id = (String) flowObj.get("id");
+
+	        Long ltNumAccount = (long) flowObj.get("tNumAccount");   
+	        Integer tNumAccount = ltNumAccount.intValue(); 
+	         
+	        Double amount = (Double) flowObj.get("amount");  
+
+	        String comment = (String) flowObj.get("comment");    
+	        
+	        if (id.indexOf("credit") != -1){
+	        	fl = new Credit(id, tNumAccount, amount, comment);
+				list.add(fl);
+	        } else if (id.indexOf("debit") !=-1) {
+	        	fl = new Debit(id, tNumAccount, amount, comment);
+				list.add(fl);	
+	        } else if (id.indexOf("transfert") !=-1) {
+	        	Long lfNumAccount = (long) flowObj.get("tNumAccount");   
+		        Integer fNumAccount = lfNumAccount.intValue(); 
+	        	fl = new Transfert (id, fNumAccount, tNumAccount, amount, comment);
+	        	list.add(fl);
+	        }
+	   }
+	
+	
+
+	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Méthode pour mettre à jour les balances
 	public static void updateBalance(List <Flow> list, Hashtable <Integer, Account> ht){

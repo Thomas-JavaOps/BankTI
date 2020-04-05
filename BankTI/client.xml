@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<listClient>
+	<client>
+		<firstName>Harry</firstName>
+		<name>Covert</name>
+	</client>
+	<client>
+		<firstName>Vincent</firstName>
+		<name>Thime</name>
+	</client>
+	<client>
+		<firstName>Paul</firstName>
+		<name>Nore</name>
+	</client>
+</listClient>

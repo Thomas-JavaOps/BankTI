@@ -49,7 +49,7 @@ public class Client {
 ///////////////////////////////////Méthodes////////////////////
 
 	public String toString() {
-		return "Le client n°" + this.num + " s'appelle " + this.firstName.toUpperCase() + " " + this.name + ".";
+		return "Le client n°" + this.num + " s'appelle " + this.firstName + " " + this.name.toUpperCase() + ".";
 	}
 
 }

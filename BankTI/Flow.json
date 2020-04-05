@@ -1,0 +1,93 @@
+[
+	{"Flow":
+		{
+		"id": "credit-01",
+		"tNumAccount": 1,
+		"amount": 150.0,
+		"comment": "Dividendes"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "debit-02",
+		"tNumAccount": 2,
+		"amount": 100.0,
+		"comment": "Resto"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "transfert-03",
+		"fNumAccount": 2,
+		"tNumAccount": 5,
+		"amount": 600.0,
+		"comment": "Remboursement"
+		}
+	}
+,	
+	{"Flow":
+		{
+		"id": "transfert-04",
+		"fNumAccount": 4,
+		"tNumAccount": 1,
+		"amount": 150.0,
+		"comment": "Remboursement Dette"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "credit-05",
+		"tNumAccount": 6,
+		"amount": 1000.0,
+		"comment": "Prêt"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "debit-06",
+		"tNumAccount": 5,
+		"amount": 500.0,
+		"comment": "Achat Iphone"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "credit-07",
+		"tNumAccount": 2,
+		"amount": 1500.0,
+		"comment": "Salaire"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "debit-08",
+		"tNumAccount": 4,
+		"amount": 1000.0,
+		"comment": "Casino"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "debit-09",
+		"tNumAccount": 6,
+		"amount": 50.0,
+		"comment": "Achat Courses"
+		}
+	}
+,
+	{"Flow":
+		{
+		"id": "credit-10",
+		"tNumAccount": 3,
+		"amount": 200.0,
+		"comment": "Interêts"
+		}
+	}
+]
