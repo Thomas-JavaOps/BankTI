@@ -1,6 +1,15 @@
 //1.3.5 Updating Accounts
 package main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,6 +21,11 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import components.Account;
 import components.Client;
 import components.Credit;
@@ -20,8 +34,6 @@ import components.Debit;
 import components.Flow;
 import components.SavingsAccount;
 import components.Transfert;
-
-import org.json.simple.JSONObject;
 
 public class Main {
 ///////////////////////////////////////Méthode Main ///////////////////////////////////////////////////////	
@@ -34,11 +46,73 @@ public class Main {
 
 		List <Account> accounts = addAccount(clients);
 		Hashtable <Integer, Account> ht = createHashtable(accounts);
-		List <Flow> flow = createFlowArray(ht);
+		List <Flow> flow = readJSON();
+		//List <Flow> flow = createFlowArray(ht);
 		updateBalance(flow, ht);
 		displayHashtable(ht);
 		
-	}
+}		
+	
+/////////////////////////////////////////////////JSON////////////////////////////////////////////////////	
+///////////////////////////// Méthode pour remplir une Liste<Flow> à partir d'un JSON//////////////////////////////
+	public  static List <Flow> readJSON() {
+		
+		JSONParser jsonParser = new JSONParser();
+		List<Flow> list = new ArrayList<Flow>();
+		
+		
+		try(FileReader json = new FileReader("flow.json")) {
+			
+			Object obj = jsonParser.parse(json);
+			JSONArray flowArray = (JSONArray) obj;
+		    
+            //Iterate over employee array
+            flowArray.forEach(emp -> parseFlow(list,(JSONObject) emp));
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+		
+		return list;
+}	
+	
+//Méthode pour incrémenter la liste pour chaque JSONObject
+private static void parseFlow(List <Flow> list, JSONObject flow)
+	    {
+			Flow fl;
+			
+			JSONObject flowObj = (JSONObject) flow.get("Flow");
+	        
+	        String id = (String) flowObj.get("id");
+
+	        Long ltNumAccount = (long) flowObj.get("tNumAccount");   
+	        Integer tNumAccount = ltNumAccount.intValue(); 
+	         
+	        Double amount = (Double) flowObj.get("amount");  
+
+	        String comment = (String) flowObj.get("comment");    
+	        
+	        if (id.indexOf("credit") != -1){
+	        	fl = new Credit(id, tNumAccount, amount, comment);
+				list.add(fl);
+	        } else if (id.indexOf("debit") !=-1) {
+	        	fl = new Debit(id, tNumAccount, amount, comment);
+				list.add(fl);	
+	        } else if (id.indexOf("transfert") !=-1) {
+	        	Long lfNumAccount = (long) flowObj.get("tNumAccount");   
+		        Integer fNumAccount = lfNumAccount.intValue(); 
+	        	fl = new Transfert (id, fNumAccount, tNumAccount, amount, comment);
+	        	list.add(fl);
+	        }
+	   }
+	
+	
+
+	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Méthode pour mettre à jour les balances
 	public static void updateBalance(List <Flow> list, Hashtable <Integer, Account> ht){
